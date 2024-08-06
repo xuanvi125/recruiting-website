@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
+import java.util.List;
+
 @Entity
 @Table(name = "companies")
 @Data
@@ -24,5 +26,10 @@ public class Company {
 
     @NotNull(message = "Company address is required")
     private String address;
+
+    @OneToMany(mappedBy = "company")
+    private List<Job> jobs;
+
+
 
 }
