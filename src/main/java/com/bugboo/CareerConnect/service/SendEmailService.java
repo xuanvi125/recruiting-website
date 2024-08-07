@@ -35,16 +35,6 @@ public class SendEmailService {
         emailSender.send(message);
     }
 
-
-//    @Async
-//    public void sendEmailWithThymeleafTemplate(String to, String subject , Map<String,String> data) throws MessagingException {
-//        Context context = new Context();
-//        context.setVariable("url",data.get("link"));
-//        context.setVariable("name",data.get("name"));
-//        String htmlBody = templateEngine.process("reset-password-email-template", context);
-//        sendEmailWithTemplate(to, subject, htmlBody);
-//    }
-
     @Async
     public void sendEmailVerifyAccount(User user, String token) throws MessagingException {
         String url = ConstantUtils.SERVER_URL + "/api/v1/auth/verify-account?token=" + token;
@@ -55,5 +45,12 @@ public class SendEmailService {
         sendEmailWithTemplate(user.getEmail(), "Verify Your Account", htmlBody);
     }
 
-
+    @Async
+    public void sendEmailForgotPassword(User user, String url) throws MessagingException {
+        Context context = new Context();
+        context.setVariable("name", user.getName());
+        context.setVariable("url", url);
+        String htmlBody = templateEngine.process("forgot-password-email-template", context);
+        sendEmailWithTemplate(user.getEmail(), "Reset Password", htmlBody);
+    }
 }

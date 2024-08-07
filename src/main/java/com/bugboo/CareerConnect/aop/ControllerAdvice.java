@@ -5,6 +5,7 @@ import com.bugboo.CareerConnect.type.exception.AppException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -54,13 +55,13 @@ public class ControllerAdvice {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
 
-//    @ExceptionHandler(BadCredentialsException.class)
-//    ResponseEntity<ErrorApiResponse> handleBadCredentialsException(BadCredentialsException e){
-//        ErrorApiResponse response = new ErrorApiResponse();
-//        response.setStatus("fail");
-//        response.setMessage("invalid email or password");
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-//    }
+    @ExceptionHandler(BadCredentialsException.class)
+    ResponseEntity<ErrorApiResponse> handleBadCredentialsException(BadCredentialsException e){
+        ErrorApiResponse response = new ErrorApiResponse();
+        response.setStatus("fail");
+        response.setMessage("invalid email or password");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
 
     @ExceptionHandler(NoHandlerFoundException.class)
     ResponseEntity<ErrorApiResponse> handleNoHandlerFoundException(NoHandlerFoundException e){

@@ -3,16 +3,20 @@ package com.bugboo.CareerConnect.service;
 import com.bugboo.CareerConnect.domain.Role;
 import com.bugboo.CareerConnect.domain.User;
 import com.bugboo.CareerConnect.domain.VerificationToken;
+import com.bugboo.CareerConnect.domain.dto.request.RequestForgotPasswordDTO;
 import com.bugboo.CareerConnect.domain.dto.request.RequestLoginDTO;
 import com.bugboo.CareerConnect.domain.dto.request.RequestRegisterUserDTO;
+import com.bugboo.CareerConnect.domain.dto.request.RequestResetPasswordDTO;
 import com.bugboo.CareerConnect.domain.dto.response.ResponseLoginDTO;
 import com.bugboo.CareerConnect.repository.RoleRepository;
 import com.bugboo.CareerConnect.repository.UserRepository;
 import com.bugboo.CareerConnect.repository.VerificationTokenRepository;
+import com.bugboo.CareerConnect.type.constant.ConstantUtils;
 import com.bugboo.CareerConnect.type.exception.AppException;
 import com.bugboo.CareerConnect.utils.TokenUtils;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -20,6 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 
 @Service
@@ -31,10 +36,10 @@ public class AuthService {
     private final SendEmailService sendEmailService;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    public AuthService(UserRepository userRepository, RoleRepository roleRepository, VerificationTokenRepository verificationTokenRepository, PasswordEncoder passwordEncoder, SendEmailService sendEmailService, AuthenticationManagerBuilder authenticationManagerBuilder) {
+    public AuthService(UserRepository userRepository, RoleRepository roleRepository, VerificationTokenRepository verificationTokenRepository, VerificationTokenRepository verificationTokenRepository1, PasswordEncoder passwordEncoder, SendEmailService sendEmailService, AuthenticationManagerBuilder authenticationManagerBuilder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.verificationTokenRepository = verificationTokenRepository;
+        this.verificationTokenRepository = verificationTokenRepository1;
         this.passwordEncoder = passwordEncoder;
         this.sendEmailService = sendEmailService;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
@@ -64,12 +69,7 @@ public class AuthService {
         verificationToken = verificationTokenRepository.save(verificationToken);
 
         // send verification email
-        try {
-            sendEmailService.sendEmailVerifyAccount(user, verificationToken.getToken());
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-//        sendEmailService.sendEmailVerifyAccount(user, verificationToken.getToken());
+        sendEmailService.sendEmailVerifyAccount(user, verificationToken.getToken());
         return user;
     }
 
@@ -91,5 +91,42 @@ public class AuthService {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return authentication;
+    }
+
+    public void forgotPassword(RequestForgotPasswordDTO requestForgotPasswordDTO) throws NoSuchAlgorithmException, MessagingException {
+        String email = requestForgotPasswordDTO.getEmail();
+        User user = userRepository.findByEmail(email).orElse(null);
+        if(user == null){
+            throw new AppException("User with this email not found",400);
+        }
+        // create reset password token + save to database
+        String resetPasswordToken = TokenUtils.generateToken();
+        String hashedToken = TokenUtils.hashToken(resetPasswordToken);
+
+        VerificationToken verificationToken = new VerificationToken();
+        verificationToken.setUser(user);
+        verificationToken.setToken(hashedToken);
+        verificationToken = verificationTokenRepository.save(verificationToken);
+
+        // Construct base URL
+        String baseUrl = ConstantUtils.CLIENT_URL;
+        String url = baseUrl + "/reset-password?token=" + resetPasswordToken;
+        this.sendEmailService.sendEmailForgotPassword(user,url);
+    }
+
+    public void resetPassword(String token, RequestResetPasswordDTO requestResetPasswordDTO) throws NoSuchAlgorithmException {
+        if(!requestResetPasswordDTO.isPasswordMatch()){
+            throw new AppException("Password not match",400);
+        }
+        String hashedToken = TokenUtils.hashToken(token);
+
+        VerificationToken verificationToken = verificationTokenRepository.findByTokenAndExpirationAfter(hashedToken, Instant.now()).orElse(null);
+        if(verificationToken == null){
+            throw new AppException("Token is invalid or expired",400);
+        }
+        User user = verificationToken.getUser();
+        user.setPassword(passwordEncoder.encode(requestResetPasswordDTO.getPassword()));
+        userRepository.save(user);
+        verificationTokenRepository.delete(verificationToken);
     }
 }
