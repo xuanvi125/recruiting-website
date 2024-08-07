@@ -83,6 +83,12 @@
 			<version>2.7.5</version>
 		</dependency>
 
+		<!--login oauth2-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+		</dependency>
+
 		<!--mysql driver-->
 
 		<dependency>

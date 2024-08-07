@@ -48,10 +48,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
-                .jwt(Customizer.withDefaults()).authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler));
+                .jwt(Customizer.withDefaults()).authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler))
+                .oauth2Login(config -> config.defaultSuccessUrl(("/public/login/success")));
         return http.build();
     }
 
