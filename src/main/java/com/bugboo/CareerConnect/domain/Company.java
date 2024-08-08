@@ -1,5 +1,6 @@
 package com.bugboo.CareerConnect.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -28,6 +29,7 @@ public class Company {
     private String address;
 
     @OneToMany(mappedBy = "company")
+    @JsonIgnore
     private List<Job> jobs;
 
 

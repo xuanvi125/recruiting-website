@@ -1,6 +1,7 @@
 package com.bugboo.CareerConnect.domain.dto.request;
 
 import com.bugboo.CareerConnect.domain.Company;
+import com.bugboo.CareerConnect.domain.Job;
 import com.bugboo.CareerConnect.domain.Skill;
 import com.bugboo.CareerConnect.type.constant.EnumLevel;
 import com.fasterxml.jackson.annotation.JsonFormat;

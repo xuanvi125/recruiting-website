@@ -2,11 +2,13 @@ package com.bugboo.CareerConnect.controller;
 
 import com.bugboo.CareerConnect.domain.Resume;
 import com.bugboo.CareerConnect.domain.dto.request.RequestApplyJobDTO;
+import com.bugboo.CareerConnect.domain.dto.request.RequestUpdateResume;
 import com.bugboo.CareerConnect.domain.dto.response.ResponsePagingResultDTO;
 import com.bugboo.CareerConnect.service.FileUploadService;
 import com.bugboo.CareerConnect.service.ResumeService;
 import com.bugboo.CareerConnect.type.annotation.ApiMessage;
 import com.bugboo.CareerConnect.type.exception.AppException;
+import com.bugboo.CareerConnect.utils.JwtUtils;
 import com.turkraft.springfilter.boot.Filter;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
@@ -21,8 +23,10 @@ import java.io.IOException;
 @RequestMapping("/api/v1/resumes")
 public class ResumeController {
     private final ResumeService resumeService;
-    public ResumeController(ResumeService resumeService, FileUploadService fileUploadService) {
+    private final JwtUtils jwtUtils;
+    public ResumeController(ResumeService resumeService, FileUploadService fileUploadService, JwtUtils jwtUtils) {
         this.resumeService = resumeService;
+        this.jwtUtils = jwtUtils;
     }
 
     @GetMapping
@@ -35,5 +39,17 @@ public class ResumeController {
     @ApiMessage("Apply job successfully")
     public ResponseEntity<Resume> createResume(@Valid RequestApplyJobDTO requestApplyJobDTO, @RequestParam(name = "file", required = false) MultipartFile file) throws IOException {
         return ResponseEntity.ok(resumeService.createResume(requestApplyJobDTO, file));
+    }
+
+    @PutMapping
+    @ApiMessage("Update resume successfully")
+    public ResponseEntity<Resume> updateResume(@Valid @RequestBody RequestUpdateResume requestUpdateResume) {
+        return ResponseEntity.ok(resumeService.updateResume(requestUpdateResume));
+    }
+
+    @GetMapping("/{id}")
+    @ApiMessage("Get resume by id successfully")
+    public ResponseEntity<Resume> getResumeById(@PathVariable int id) {
+        return ResponseEntity.ok(resumeService.getResumeById(id));
     }
 }
