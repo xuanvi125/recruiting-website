@@ -32,16 +32,7 @@ public class JobService {
 
     public ResponsePagingResultDTO getAllJobs(Specification<Job> specification, Pageable pageable) {
         Page<Job> jobs = jobRepository.findAll(specification, pageable);
-
-        MetaData metaData = new MetaData();
-        metaData.setTotalElements(jobs.getTotalElements());
-        metaData.setTotalPages(jobs.getTotalPages());
-        metaData.setCurrentPage(jobs.getNumber() + 1);
-
-        ResponsePagingResultDTO responsePagingResultDTO = new ResponsePagingResultDTO();
-        responsePagingResultDTO.setMetaData(metaData);
-        responsePagingResultDTO.setResult(jobs.getContent());
-        return responsePagingResultDTO;
+        return ResponsePagingResultDTO.of(jobs);
     }
 
     public Job getJobById(int id) {

@@ -20,14 +20,7 @@ public class CompanyService {
 
     public ResponsePagingResultDTO getAllCompanies(Specification<Company> specification, Pageable pageable) {
         Page<Company> companies = companyRepository.findAll(specification, pageable);
-        ResponsePagingResultDTO responsePagingResultDTO = new ResponsePagingResultDTO();
-        MetaData metaData = new MetaData();
-        metaData.setCurrentPage(companies.getNumber() + 1);
-        metaData.setTotalPages(companies.getTotalPages());
-        metaData.setTotalElements(companies.getTotalElements());
-        responsePagingResultDTO.setMetaData(metaData);
-        responsePagingResultDTO.setResult(companies.getContent());
-        return responsePagingResultDTO;
+        return ResponsePagingResultDTO.of(companies);
     }
 
     public Company getCompanyById(int id) {

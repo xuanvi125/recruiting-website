@@ -20,14 +20,7 @@ public class SkillService {
 
     public ResponsePagingResultDTO getAllSkills(Specification<Skill> specification, Pageable pageable) {
         Page<Skill> skills = skillRepository.findAll(specification, pageable);
-        ResponsePagingResultDTO responsePagingResultDTO = new ResponsePagingResultDTO();
-        MetaData metaData = new MetaData();
-        metaData.setCurrentPage(skills.getNumber() + 1);
-        metaData.setTotalPages(skills.getTotalPages());
-        metaData.setTotalElements(skills.getTotalElements());
-        responsePagingResultDTO.setResult(skills.getContent());
-        responsePagingResultDTO.setMetaData(metaData);
-        return responsePagingResultDTO;
+        return ResponsePagingResultDTO.of(skills);
     }
 
     public Skill createSkill(Skill skill) {
