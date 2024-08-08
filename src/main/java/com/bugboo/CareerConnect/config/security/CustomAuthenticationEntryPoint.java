@@ -1,4 +1,4 @@
-package com.bugboo.CareerConnect.config;
+package com.bugboo.CareerConnect.config.security;
 
 import com.bugboo.CareerConnect.type.apiResponse.ErrorApiResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;

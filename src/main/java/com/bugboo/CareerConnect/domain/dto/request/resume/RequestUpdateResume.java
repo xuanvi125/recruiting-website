@@ -1,4 +1,4 @@
-package com.bugboo.CareerConnect.domain.dto.request;
+package com.bugboo.CareerConnect.domain.dto.request.resume;
 
 import com.bugboo.CareerConnect.type.constant.ResumeStatus;
 import jakarta.validation.constraints.NotNull;

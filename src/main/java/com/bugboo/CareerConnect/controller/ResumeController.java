@@ -1,13 +1,12 @@
 package com.bugboo.CareerConnect.controller;
 
 import com.bugboo.CareerConnect.domain.Resume;
-import com.bugboo.CareerConnect.domain.dto.request.RequestApplyJobDTO;
-import com.bugboo.CareerConnect.domain.dto.request.RequestUpdateResume;
+import com.bugboo.CareerConnect.domain.dto.request.job.RequestApplyJobDTO;
+import com.bugboo.CareerConnect.domain.dto.request.resume.RequestUpdateResume;
 import com.bugboo.CareerConnect.domain.dto.response.ResponsePagingResultDTO;
 import com.bugboo.CareerConnect.service.FileUploadService;
 import com.bugboo.CareerConnect.service.ResumeService;
 import com.bugboo.CareerConnect.type.annotation.ApiMessage;
-import com.bugboo.CareerConnect.type.exception.AppException;
 import com.bugboo.CareerConnect.utils.JwtUtils;
 import com.turkraft.springfilter.boot.Filter;
 import jakarta.validation.Valid;

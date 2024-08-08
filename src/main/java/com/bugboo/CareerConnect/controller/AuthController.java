@@ -1,10 +1,10 @@
 package com.bugboo.CareerConnect.controller;
 
 import com.bugboo.CareerConnect.domain.User;
-import com.bugboo.CareerConnect.domain.dto.request.RequestForgotPasswordDTO;
-import com.bugboo.CareerConnect.domain.dto.request.RequestLoginDTO;
-import com.bugboo.CareerConnect.domain.dto.request.RequestRegisterUserDTO;
-import com.bugboo.CareerConnect.domain.dto.request.RequestResetPasswordDTO;
+import com.bugboo.CareerConnect.domain.dto.request.auth.RequestForgotPasswordDTO;
+import com.bugboo.CareerConnect.domain.dto.request.auth.RequestLoginDTO;
+import com.bugboo.CareerConnect.domain.dto.request.auth.RequestRegisterUserDTO;
+import com.bugboo.CareerConnect.domain.dto.request.auth.RequestResetPasswordDTO;
 import com.bugboo.CareerConnect.domain.dto.response.ResponseLoginDTO;
 import com.bugboo.CareerConnect.repository.UserRepository;
 import com.bugboo.CareerConnect.service.AuthService;

@@ -1,8 +1,8 @@
 package com.bugboo.CareerConnect.controller;
 
 import com.bugboo.CareerConnect.domain.Job;
-import com.bugboo.CareerConnect.domain.dto.request.RequestCreateJobDTO;
-import com.bugboo.CareerConnect.domain.dto.request.RequestUpdateJobDTO;
+import com.bugboo.CareerConnect.domain.dto.request.job.RequestCreateJobDTO;
+import com.bugboo.CareerConnect.domain.dto.request.job.RequestUpdateJobDTO;
 import com.bugboo.CareerConnect.domain.dto.response.ResponsePagingResultDTO;
 import com.bugboo.CareerConnect.service.JobService;
 import com.bugboo.CareerConnect.type.annotation.ApiMessage;

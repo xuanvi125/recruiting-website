@@ -1,4 +1,4 @@
-package com.bugboo.CareerConnect.config;
+package com.bugboo.CareerConnect.config.security;
 
 import com.bugboo.CareerConnect.repository.UserRepository;
 import org.springframework.context.annotation.Bean;

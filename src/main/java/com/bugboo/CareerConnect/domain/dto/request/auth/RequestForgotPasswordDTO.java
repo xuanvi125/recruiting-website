@@ -1,4 +1,4 @@
-package com.bugboo.CareerConnect.domain.dto.request;
+package com.bugboo.CareerConnect.domain.dto.request.auth;
 
 import lombok.Data;
 

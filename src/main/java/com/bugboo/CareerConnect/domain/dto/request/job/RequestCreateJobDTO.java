@@ -1,20 +1,12 @@
-package com.bugboo.CareerConnect.domain.dto.request;
+package com.bugboo.CareerConnect.domain.dto.request.job;
 
-import com.bugboo.CareerConnect.domain.Company;
-import com.bugboo.CareerConnect.domain.Job;
-import com.bugboo.CareerConnect.domain.Skill;
 import com.bugboo.CareerConnect.type.constant.EnumLevel;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 
 @Data
 public class RequestCreateJobDTO {

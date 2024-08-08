@@ -1,12 +1,10 @@
-package com.bugboo.CareerConnect.domain.dto.request;
+package com.bugboo.CareerConnect.domain.dto.request.job;
 
-import com.bugboo.CareerConnect.domain.Job;
 import com.bugboo.CareerConnect.type.constant.EnumLevel;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.time.LocalDate;

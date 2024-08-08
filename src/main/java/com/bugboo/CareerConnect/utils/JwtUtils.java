@@ -15,7 +15,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
 
-import static com.bugboo.CareerConnect.config.JwtSecurityConfig.JWT_ALGORITHM;
+import static com.bugboo.CareerConnect.config.security.JwtSecurityConfig.JWT_ALGORITHM;
 
 @Service
 public class JwtUtils {
