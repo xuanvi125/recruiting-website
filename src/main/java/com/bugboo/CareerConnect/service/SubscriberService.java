@@ -56,4 +56,12 @@ public class SubscriberService {
         });
         return subscribers;
     }
+
+    public void unsubscribeSkills(RequestSubscribeSkillDTO requestSubscribeSkillDTO) {
+        User user = jwtUtils.getCurrentUserLogin();
+        List<Subscriber> subscribers = subscriberRepository.findByUserAndSkillIdIn(user, requestSubscribeSkillDTO.getSkillIds());
+        if (subscribers.isEmpty())
+            throw new AppException("Invalid skill ids. You have not subscribed to these skills", 400);
+        subscriberRepository.deleteAll(subscribers);
+    }
 }

@@ -22,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
 @RestController
@@ -42,7 +43,7 @@ public class AuthController {
 
     @PostMapping("/register")
     @ApiMessage("Please check your email to verify your account")
-    public ResponseEntity<User> register(@Valid @RequestBody RequestRegisterUserDTO  requestRegisterUserDTO) throws MessagingException {
+    public ResponseEntity<User> register(@Valid @RequestBody RequestRegisterUserDTO  requestRegisterUserDTO) throws MessagingException, UnsupportedEncodingException {
         return ResponseEntity.ok(authService.register(requestRegisterUserDTO));
     }
 
@@ -132,7 +133,7 @@ public class AuthController {
 
     @PostMapping("/forgot-password")
     @ApiMessage("Send email to reset password successfully. Please check your email")
-    public ResponseEntity<User> handleForgotPassword(@RequestBody RequestForgotPasswordDTO requestForgotPasswordDTO) throws MessagingException, NoSuchAlgorithmException {
+    public ResponseEntity<User> handleForgotPassword(@RequestBody RequestForgotPasswordDTO requestForgotPasswordDTO) throws MessagingException, NoSuchAlgorithmException, UnsupportedEncodingException {
         authService.forgotPassword(requestForgotPasswordDTO);
         return ResponseEntity.ok().body(null);
     }

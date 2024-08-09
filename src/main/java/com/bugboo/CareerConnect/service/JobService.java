@@ -6,10 +6,12 @@ import com.bugboo.CareerConnect.domain.Skill;
 import com.bugboo.CareerConnect.domain.dto.request.job.RequestCreateJobDTO;
 import com.bugboo.CareerConnect.domain.dto.request.job.RequestUpdateJobDTO;
 import com.bugboo.CareerConnect.domain.dto.response.ResponsePagingResultDTO;
+import com.bugboo.CareerConnect.event.JobCreatedEvent;
 import com.bugboo.CareerConnect.repository.CompanyRepository;
 import com.bugboo.CareerConnect.repository.JobRepository;
 import com.bugboo.CareerConnect.repository.SkillRepository;
 import com.bugboo.CareerConnect.type.exception.AppException;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -22,11 +24,12 @@ public class JobService {
     private final JobRepository jobRepository;
     private final SkillRepository skillRepository;
     private final CompanyRepository companyRepository;
-
-    public JobService(JobRepository jobRepository, SkillRepository skillRepository, CompanyRepository companyRepository) {
+    private final ApplicationEventPublisher eventPublisher;
+    public JobService(JobRepository jobRepository, SkillRepository skillRepository, CompanyRepository companyRepository, ApplicationEventPublisher eventPublisher) {
         this.jobRepository = jobRepository;
         this.skillRepository = skillRepository;
         this.companyRepository = companyRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     public ResponsePagingResultDTO getAllJobs(Specification<Job> specification, Pageable pageable) {
@@ -54,7 +57,11 @@ public class JobService {
         job.setStartDate(requestCreateJobDTO.getStartDate());
         job.setCompany(company);
         job.setSkills(skillList);
-        return jobRepository.save(job);
+        job = jobRepository.save(job);
+        // notify subscribers
+        JobCreatedEvent jobCreatedEvent = new JobCreatedEvent(job);
+        eventPublisher.publishEvent(jobCreatedEvent);
+        return job;
     }
 
     public void deleteJob(int id) {

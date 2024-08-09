@@ -22,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 
@@ -44,7 +45,7 @@ public class AuthService {
     }
 
     @Transactional
-    public User register(RequestRegisterUserDTO requestRegisterUserDTO) throws MessagingException {
+    public User register(RequestRegisterUserDTO requestRegisterUserDTO) throws MessagingException, UnsupportedEncodingException {
         User userDB = userRepository.findByEmail(requestRegisterUserDTO.getEmail()).orElse(null);
         if (userDB != null) {
             throw new AppException("Email already exists", 400);
@@ -91,7 +92,7 @@ public class AuthService {
         return authentication;
     }
 
-    public void forgotPassword(RequestForgotPasswordDTO requestForgotPasswordDTO) throws NoSuchAlgorithmException, MessagingException {
+    public void forgotPassword(RequestForgotPasswordDTO requestForgotPasswordDTO) throws NoSuchAlgorithmException, MessagingException, UnsupportedEncodingException {
         String email = requestForgotPasswordDTO.getEmail();
         User user = userRepository.findByEmail(email).orElse(null);
         if(user == null){

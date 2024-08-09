@@ -5,11 +5,9 @@ import com.bugboo.CareerConnect.domain.dto.request.subscriber.RequestSubscribeSk
 import com.bugboo.CareerConnect.service.SubscriberService;
 import com.bugboo.CareerConnect.type.annotation.ApiMessage;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +24,12 @@ public class SubscriberController {
     @ApiMessage("Subscriber created successfully")
     public ResponseEntity<List<Subscriber>> createSubscriber(@Valid @RequestBody RequestSubscribeSkillDTO requestSubscribeSkillDTO) {
         return ResponseEntity.ok(subscriberService.createSubscriber(requestSubscribeSkillDTO));
+    }
+
+    @DeleteMapping
+    @ApiMessage("Unsubscribe successfully")
+    public ResponseEntity<Subscriber> unsubscribeSkills(@Valid @RequestBody RequestSubscribeSkillDTO requestSubscribeSkillDTO) {
+        subscriberService.unsubscribeSkills(requestSubscribeSkillDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 }
