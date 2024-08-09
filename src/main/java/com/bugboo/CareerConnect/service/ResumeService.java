@@ -9,6 +9,7 @@ import com.bugboo.CareerConnect.domain.dto.request.resume.RequestUpdateResume;
 import com.bugboo.CareerConnect.domain.dto.response.ResponsePagingResultDTO;
 import com.bugboo.CareerConnect.repository.JobRepository;
 import com.bugboo.CareerConnect.repository.ResumeRepository;
+import com.bugboo.CareerConnect.service.specifications.ResumeSpecification;
 import com.bugboo.CareerConnect.type.exception.AppException;
 import com.bugboo.CareerConnect.utils.JwtUtils;
 import jakarta.persistence.criteria.Join;
@@ -37,11 +38,7 @@ public class ResumeService {
     public ResponsePagingResultDTO getAllResumes(Specification<Resume> specification, Pageable pageable) {
         User currentUser = jwtUtils.getCurrentUserLogin();
         Company hrCompany = currentUser.getCompany();
-        Specification<Resume> companySpecification = (root, query, criteriaBuilder) -> {
-            Join<Resume, Job> jobJoin = root.join("job");
-            Join<Job, Company> companyJoin = jobJoin.join("company");
-            return criteriaBuilder.equal(companyJoin.get("id"), hrCompany.getId());
-        };
+        Specification<Resume> companySpecification = ResumeSpecification.belongToCompany(hrCompany.getId());
         specification = specification.and(companySpecification);
         Page<Resume> resumes = resumeRepository.findAll(specification, pageable);
         return ResponsePagingResultDTO.of(resumes);

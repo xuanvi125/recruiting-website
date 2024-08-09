@@ -8,6 +8,7 @@ import com.bugboo.CareerConnect.domain.dto.response.ResponseLoginDTO;
 import com.bugboo.CareerConnect.domain.dto.response.ResponsePagingResultDTO;
 import com.bugboo.CareerConnect.repository.ResumeRepository;
 import com.bugboo.CareerConnect.repository.UserRepository;
+import com.bugboo.CareerConnect.service.specifications.ResumeSpecification;
 import com.bugboo.CareerConnect.type.exception.AppException;
 import com.bugboo.CareerConnect.utils.JwtUtils;
 import org.springframework.data.domain.Pageable;
@@ -39,7 +40,7 @@ public class UserService {
     }
 
     public ResponsePagingResultDTO getResumesByUser(Specification<Resume> specification, Pageable pageable) {
-        Specification<Resume> spec = specification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("user"), getCurrentUser()));
+        Specification<Resume> spec = specification.and(ResumeSpecification.belongToUser(getCurrentUser()));
         return ResponsePagingResultDTO.of(resumeRepository.findAll(spec, pageable));
     }
 
