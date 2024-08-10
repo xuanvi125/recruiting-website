@@ -1,5 +1,6 @@
 package com.bugboo.CareerConnect.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,5 +17,6 @@ public class Role {
     private String description;
 
     @OneToMany(mappedBy = "role")
+    @JsonIgnore
     private List<Permission> permissions;
 }

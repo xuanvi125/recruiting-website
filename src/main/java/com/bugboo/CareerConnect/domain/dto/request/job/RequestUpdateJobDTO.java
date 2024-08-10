@@ -29,8 +29,6 @@ public class RequestUpdateJobDTO {
     @JsonFormat(pattern = "dd-MM-yyyy")
     LocalDate startDate;
 
-    @NotNull(message = "Company is required")
-    private int companyId;
 
     @NotNull(message = "Skills are required")
     private int[] skillIds;
