@@ -1,5 +1,6 @@
 package com.bugboo.CareerConnect.controller;
 
+import com.bugboo.CareerConnect.domain.Role;
 import com.bugboo.CareerConnect.domain.User;
 import com.bugboo.CareerConnect.domain.dto.request.admin.RequestAdminUpdateUserDTO;
 import com.bugboo.CareerConnect.domain.dto.response.ResponsePagingResultDTO;
@@ -31,5 +32,11 @@ public class AdminController {
     @ApiMessage("Update user successfully")
     public ResponseEntity<User> updateUser(@Valid @RequestBody RequestAdminUpdateUserDTO requestAdminUpdateUserDTO) {
         return ResponseEntity.ok(userService.updateUser(requestAdminUpdateUserDTO));
+    }
+
+    @GetMapping("/roles")
+    @ApiMessage("Get roles successfully")
+    public ResponseEntity<ResponsePagingResultDTO> getRoles(@Filter Specification<Role> specification, Pageable pageable) {
+        return ResponseEntity.ok(userService.getRoles(specification,pageable));
     }
 }

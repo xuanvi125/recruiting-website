@@ -91,4 +91,8 @@ public class UserService {
         user.setRole(role);
         return userRepository.save(user);
     }
+
+    public ResponsePagingResultDTO getRoles(Specification<Role> specification, Pageable pageable) {
+        return ResponsePagingResultDTO.of(roleRepository.findAll(specification, pageable));
+    }
 }
