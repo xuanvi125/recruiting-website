@@ -41,7 +41,7 @@ public class SendEmailService {
 
     @Async
     public void sendEmailVerifyAccount(User user, String token) throws MessagingException, UnsupportedEncodingException {
-        String url = ConstantUtils.SERVER_URL + "/api/v1/auth/verify-account?token=" + token;
+        String url = ConstantUtils.CLIENT_URL + "/verify-account?token=" + token;
         Context context = new Context();
         context.setVariable("name",user.getName());
         context.setVariable("url", url);
